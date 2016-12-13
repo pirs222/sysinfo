@@ -26,26 +26,24 @@
 			}
 		</style>
 	</head>
-		<h2>Load Average</h2>
-		<table>
-			<tr>
-				<td>Param</td>
-				<td class="ok">12</td>
-				<td class="warn">234</td>
-				<td class="error">2345</td>
-			</tr>
-		</table>
-
-		<h2>Disk State</h2>
-		<table>
-			<tr>
-				<td>Param</td>
-				<td class="ok">12</td>
-				<td class="warn">234</td>
-				<td class="error">2345</td>
-			</tr>
-		</table>
-
 	<body>
+	
+<?php
+// Соединяемся, выбираем базу данных
+	$mysqli = new mysqli('localhost', 'root', 'mysqlpass',"sysinfo");
+	$res = $mysqli->query("SELECT  id,date FROM logs ORDER BY id DESC;");
+	$row = $res->fetch_assoc();
+	echo "<h1>Datetime: ".$row['date']."  id: ".$row['id']."</h1>";
+?>
+	<h2>Load Average</h2>
+		<table>
+			<tr>
+				<td>Param</td>
+				<td class="ok">12</td>
+				<td class="warn">234</td>
+				<td class="error">2345</td>
+			</tr>
+		</table>
+
 	</body>
 </html>

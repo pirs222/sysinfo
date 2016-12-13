@@ -37,6 +37,8 @@ sudo service nginx restart
 
 # create database
 mysql --user=$DB_USER --password=$DB_PASSWD  < config/database.sql
+# copy sysinfo.php
+sudo cp config/sysinfo.php /var/www/html/sysinfo.php
 
 
 # cron
