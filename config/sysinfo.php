@@ -31,9 +31,14 @@
 <?php
 // Соединяемся, выбираем базу данных
 	$mysqli = new mysqli('localhost', 'root', 'mysqlpass',"sysinfo");
-	$res = $mysqli->query("SELECT  id,date FROM logs ORDER BY id DESC;");
+	$res = $mysqli->query("SELECT  id,date FROM logs ORDER BY id DESC LIMIT 1;");
 	$row = $res->fetch_assoc();
-	echo "<h1>Datetime: ".$row['date']."  id: ".$row['id']."</h1>";
+	
+	$usersTimezone = new DateTimeZone('Europe/Moscow');
+	$l10nDate = new DateTime($row['date']);
+	$l10nDate->setTimeZone($usersTimezone);
+
+	echo "<h1>Datetime: ".$l10nDate->format('Y-m-d H:i:s')."  id: ".$row['id']."</h1>";
 ?>
 	<h2>Load Average</h2>
 		<table>
