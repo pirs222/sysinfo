@@ -45,6 +45,6 @@ sudo cp config/sysinfo.php /var/www/html/sysinfo.php
 chmod +x $PWD/config/cron_procedure.sh
 
 crontab -l > $PWD/mycron.sh
-#commented now
+#commented now !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #echo "0-59 * * * * $PWD/config/cron_procedure.sh" >> $PWD/mycron.sh
 crontab $PWD/mycron.sh

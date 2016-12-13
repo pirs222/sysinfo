@@ -29,16 +29,13 @@
 	<body>
 	
 <?php
+	echo $_GET['q'];
 // Соединяемся, выбираем базу данных
 	$mysqli = new mysqli('localhost', 'root', 'mysqlpass',"sysinfo");
 	$res = $mysqli->query("SELECT  id,date FROM logs ORDER BY id DESC LIMIT 1;");
 	$row = $res->fetch_assoc();
-	
-	$usersTimezone = new DateTimeZone('Europe/Moscow');
-	$l10nDate = new DateTime($row['date']);
-	$l10nDate->setTimeZone($usersTimezone);
 	$logs_id=$row['id'];
-	echo "<h1>Datetime: ".$l10nDate->format('Y-m-d H:i:s')."  id: ".$logs_id."</h1>";
+	echo "<h1>Datetime: ".$row['date']."  id: ".$logs_id."</h1>";
 
 	$res = $mysqli->query("SELECT  id,name FROM params  WHERE logs_id=".$logs_id." ORDER BY id");
 
@@ -51,7 +48,10 @@ while ($row = $res->fetch_assoc()) {
 	while ($row2 = $res2->fetch_assoc()) {
 		echo "<tr>";
 			foreach($row2 as $item){
-					echo "<td>".$item."</td>";
+				$parts = preg_split('/\s+/', $item);
+				foreach($parts as $part){
+					echo "<td>".$part."</td>";
+				}
 			};
 		echo "</tr>";
 	}
