@@ -37,8 +37,28 @@
 	$usersTimezone = new DateTimeZone('Europe/Moscow');
 	$l10nDate = new DateTime($row['date']);
 	$l10nDate->setTimeZone($usersTimezone);
+	$logs_id=$row['id'];
+	echo "<h1>Datetime: ".$l10nDate->format('Y-m-d H:i:s')."  id: ".$logs_id."</h1>";
 
-	echo "<h1>Datetime: ".$l10nDate->format('Y-m-d H:i:s')."  id: ".$row['id']."</h1>";
+	$res = $mysqli->query("SELECT  id,name FROM params  WHERE logs_id=".$logs_id." ORDER BY id");
+
+while ($row = $res->fetch_assoc()) {
+	$params_id= $row['id'];
+	$name= $row['name'];
+	echo "<h2>".$name."</h2>";
+	echo "<table>";
+	$res2 = $mysqli->query("SELECT  id,name FROM `values`  WHERE params_id=".$params_id." ORDER BY id");
+	while ($row2 = $res2->fetch_assoc()) {
+		echo "<tr>";
+			foreach($row2 as $item){
+					echo "<td>".$item."</td>";
+			};
+		echo "</tr>";
+	}
+	echo "</table>";
+
+}
+
 ?>
 	<h2>Load Average</h2>
 		<table>
