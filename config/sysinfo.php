@@ -15,11 +15,8 @@
 	$mysqli = new mysqli('localhost', 'root', 'mysqlpass',"sysinfo");
 
 
-	$id=intval($_GET['q']);
+	$id=intval($_GET["q"]);
 	if ($id>0){
-		if($id>1){
-			echo "<a href='sysinfo.php?q=".$id-1."'><button>Prev data</button> ";
-		}	
 		$res = $mysqli->query("SELECT  id,date FROM log WHERE id=$id;");
 	}
 	else{
@@ -29,8 +26,12 @@
 	$row = $res->fetch_assoc();
 	$log_id=$row['id'];
 	$date=$row['date'];
+	if($log_id>1){
+			echo "<a href='sysinfo.php?q=".($log_id-1)."'><button>Prev data</button></a>";
+	};	
+
 // show data log
-	echo "<h1 class='ok'>Datetime: $date  id: $logs_id</h1>";
+	echo "<h1 class='ok'>Datetime (UTC): $date  id: $log_id</h1>";
 
 	$res = $mysqli->query("SELECT  id,name FROM section  WHERE log_id=$log_id ORDER BY id");
 
@@ -44,7 +45,7 @@ while ($section = $res->fetch_assoc()) {
 	while ($row = $res2->fetch_assoc()) {
 		$datarow = $row['datarow'];
 		// строка данных
-		echo "<pre>$datarow</pre>";
+		echo "<pre>$datarow</pre><hr>";
 	}
 }
 

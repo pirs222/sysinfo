@@ -51,3 +51,5 @@ crontab -l > $PWD/mycron.sh
 #commented now !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #echo "0-59 * * * * $PWD/config/cron_procedure.sh" >> $PWD/mycron.sh
 crontab $PWD/mycron.sh
+
+sudo apt-get -y install sysstat
