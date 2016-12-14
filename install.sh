@@ -21,24 +21,25 @@ sudo apt-get -y install mysql-server
 sudo apt-get -y install php-mysql
 
 sudo rm /etc/apache2/sites-enabled/*
-sudo cp  config/sysinfo /etc/apache2/sites-enabled/sysinfo
+sudo ln -s  $PWD/config/sysinfo_apache /etc/apache2/sites-enabled/sysinfo_apache
 
 sudo rm /etc/apache2/ports.conf
-sudo cp config/ports.conf /etc/apache2/ports.conf
-sudo cp config/index.php /var/www/html/index.php
+sudo cp $PWD/config/ports.conf /etc/apache2/ports.conf
+sudo ln -s $PWD/config/index.php /var/www/html/index.php
 
 sudo service apache2 restart
 
 sudo apt-get -y install nginx
 sudo rm /etc/nginx/sites-enabled/*
-sudo cp config/sysinfo_nginx /etc/nginx/sites-enabled/sysinfo_nginx
+sudo ln -s $PWD/config/sysinfo_nginx /etc/nginx/sites-enabled/sysinfo_nginx
 
 sudo service nginx restart
 
 # create database
 mysql --user=$DB_USER --password=$DB_PASSWD  < config/database.sql
 # copy sysinfo.php
-sudo cp config/sysinfo.php /var/www/html/sysinfo.php
+sudo ln -s $PWD/config/sysinfo.php /var/www/html/sysinfo.php
+sudo ln -s $PWD/config/style.css /var/www/html/style.css
 
 
 # cron
