@@ -5,70 +5,49 @@
 	  <meta charset="utf-8">
 
 	  <title>SysInfo</title>
-	  <link rel="stylesheet" href="css/styles.css?v=1.0">
-	  <style media="screen" type="text/css">
-			.ok{
-				color: white;
-				background-color:darkgreen;
-			}
-			.warn{
-				background-color:orange;
-			}
-			.fail,.error{
-				color: white;
-				background-color:red;
-			}
-			td{
-				padding:0 10px;
-			}
-			h2{
-				margin:20px 0 0 0;
-			}
-		</style>
+	  <link rel="stylesheet" href="style.css">
 	</head>
 	<body>
 	
 <?php
-	echo $_GET['q'];
+
 // Соединяемся, выбираем базу данных
 	$mysqli = new mysqli('localhost', 'root', 'mysqlpass',"sysinfo");
-	$res = $mysqli->query("SELECT  id,date FROM logs ORDER BY id DESC LIMIT 1;");
-	$row = $res->fetch_assoc();
-	$logs_id=$row['id'];
-	echo "<h1>Datetime: ".$row['date']."  id: ".$logs_id."</h1>";
 
-	$res = $mysqli->query("SELECT  id,name FROM params  WHERE logs_id=".$logs_id." ORDER BY id");
 
-while ($row = $res->fetch_assoc()) {
-	$params_id= $row['id'];
-	$name= $row['name'];
-	echo "<h2>".$name."</h2>";
-	echo "<table>";
-	$res2 = $mysqli->query("SELECT  id,name FROM `values`  WHERE params_id=".$params_id." ORDER BY id");
-	while ($row2 = $res2->fetch_assoc()) {
-		echo "<tr>";
-			foreach($row2 as $item){
-				$parts = preg_split('/\s+/', $item);
-				foreach($parts as $part){
-					echo "<td>".$part."</td>";
-				}
-			};
-		echo "</tr>";
+	$id=intval($_GET['q']);
+	if ($id>0){
+		if($id>1){
+			echo "<a href='sysinfo.php?q=".$id-1."'><button>Prev data</button> ";
+		}	
+		$res = $mysqli->query("SELECT  id,date FROM log WHERE id=$id;");
 	}
-	echo "</table>";
+	else{
+		$res = $mysqli->query("SELECT  id,date FROM log ORDER BY id DESC LIMIT 1;");
+	}
 
+	$row = $res->fetch_assoc();
+	$log_id=$row['id'];
+	$date=$row['date'];
+// show data log
+	echo "<h1 class='ok'>Datetime: $date  id: $logs_id</h1>";
+
+	$res = $mysqli->query("SELECT  id,name FROM section  WHERE log_id=$log_id ORDER BY id");
+
+while ($section = $res->fetch_assoc()) {
+	$section_id= $section['id'];
+	$name= $section['name'];
+// заголовок секции
+	echo "<h2>$name</h2>";
+
+	$res2 = $mysqli->query("SELECT  datarow FROM  data  WHERE section_id=$section_id ORDER BY id");
+	while ($row = $res2->fetch_assoc()) {
+		$datarow = $row['datarow'];
+		// строка данных
+		echo "<pre>$datarow</pre>";
+	}
 }
 
 ?>
-	<h2>Load Average</h2>
-		<table>
-			<tr>
-				<td>Param</td>
-				<td class="ok">12</td>
-				<td class="warn">234</td>
-				<td class="error">2345</td>
-			</tr>
-		</table>
-
 	</body>
 </html>
