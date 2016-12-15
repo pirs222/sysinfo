@@ -57,3 +57,6 @@ sudo apt-get -y install sysstat
 # for tcpdump
 chmod +x addsudousers.sh
 sudo ./addsudousers.sh $USER
+
+# for gawk
+sudo apt-get -y install gawk 
