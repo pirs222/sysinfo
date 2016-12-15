@@ -39,7 +39,7 @@
 	};	
 
 // show data log
-	echo "<h1 class='ok'>Datetime (UTC): $date  id: $log_id</h1>";
+	echo "<h1>Datetime (UTC): $date  id: $log_id</h1>";
 
 	$res = $mysqli->query("SELECT  name,data FROM section  WHERE log_id=$log_id ORDER BY id");
 

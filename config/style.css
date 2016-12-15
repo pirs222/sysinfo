@@ -1,10 +1,10 @@
 .ok{
-	color: darkgreen;
+	color: green;
 }
 .warn{
 	color:orange;
 }
-.critical,.fail,.error{
+.crit,.fail,.error{
 	color: red;
 }
 td{

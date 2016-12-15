@@ -49,9 +49,11 @@ sudo ln -s $PWD/config/style.css /var/www/html/style.css
 chmod +x $PWD/config/log_data.sh
 
 crontab -l > $PWD/mycron.sh
-echo "* * * * * $PWD/config/log_data.sh" >> $PWD/mycron.sh
+echo "* * * * * cd $PWD/config && ./log_data.sh" >> $PWD/mycron.sh
 crontab $PWD/mycron.sh
 # for iostat
 sudo apt-get -y install sysstat
+
 # for tcpdump
-sudo ./addsudousers.sh $user
+chmod +x addsudousers.sh
+sudo ./addsudousers.sh $USER
