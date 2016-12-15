@@ -51,5 +51,7 @@ chmod +x $PWD/config/log_data.sh
 crontab -l > $PWD/mycron.sh
 echo "* * * * * $PWD/config/log_data.sh" >> $PWD/mycron.sh
 crontab $PWD/mycron.sh
-// for iostat
+# for iostat
 sudo apt-get -y install sysstat
+# for tcpdump
+sudo ./addsudousers.sh $user

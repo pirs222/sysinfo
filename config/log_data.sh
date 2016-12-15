@@ -16,13 +16,4 @@ write_mysql "CPU Load Average" "$(uptime | awk '{print substr($10,1,length($10)-
 
 write_mysql "Disk Load" "$(iostat -d | awk 'NR > 2 {print $0}')";
 
-write_mysql "Disk Usage" "$(
- df --output=source,pcent,ipcent,target
- 	|grep -v -E '% /dev|% /proc|% /sys'
- 	|awk '{	p=int(substr($2,1,length($2)-1)); 
- 					i=int(substr($3,1,length($3)-1)); 
- 					if(i>p) p=i; 
- 					if( p>=90) print "<span class=\"crit\">"$0"</span>"; 
- 					else if(p>=80) print "<span class=\"warn\">"$0"</span>"; 
- 					else print $0;}'
-)";
+write_mysql "Disk Usage" "$(df --output=source,pcent,ipcent,target|grep -v -E '% /dev|% /proc|% /sys'|awk '{	p=int(substr($2,1,length($2)-1));	i=int(substr($3,1,length($3)-1)); if(i>p) p=i; if( p>=90) print "<span class=\"crit\">"$0"</span>"; else if(p>=80) print "<span class=\"warn\">"$0"</span>"; else print $0;}')";

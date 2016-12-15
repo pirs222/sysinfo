@@ -30,8 +30,8 @@
 	$date=$row['date'];
  
  	//  current data button
- 	if ($id<>$log_id){
- 		echo "<a href='sysinfo'><button>Current data</button>";
+ 	if ($id>0){
+ 		echo "<a href='sysinfo'><button>Current data</button></a>";
  	}
  	// Prev data button
 	if($log_id>1){
