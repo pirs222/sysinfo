@@ -1,17 +1,15 @@
 .ok{
-	color: white;
-	background-color:darkgreen;
+	color: darkgreen;
 }
 .warn{
-	background-color:orange;
+	color:orange;
 }
-.fail,.error{
-	color: white;
-	background-color:red;
+.critical,.fail,.error{
+	color: red;
 }
 td{
 	padding:0 10px;
 }
 h2{
-	margin:20px 0 0 0;
+	margin:30px 0 0 0;
 }
