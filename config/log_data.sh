@@ -22,7 +22,7 @@ write_mysql "CPU Load Average" "$(uptime | awk '{print substr($10,1,length($10)-
 write_mysql "tcpdump Top Talkers" "$(sudo tcpdump -nn -r $filename tcp or udp or arp or icmp | awk '{print $3 "\n" $5}' | cut -sd. -f 1-4 | sort | uniq -c | sort -nr | head -10)";
 write_mysql "tcpdump Top Talkers w/o  local ip" "$(sudo tcpdump -nn -r $filename tcp or udp or arp or icmp | awk '{print $3 "\n" $5}' |grep -v -F "$(ip addr | awk '/global/ {print $2}' | cut -d/ -f1)" | cut -sd. -f 1-4 | sort | uniq -c | sort -nr | head -10)";
 write_mysql "tcpdump Top Talkers by Packet Size" "$(sudo tcpdump -nn -r $filename| awk '{print int($NF)}'|sort | uniq -c | sort -nr | awk '{ a[++n,1] = $1; a[n,2] = $2; t += $1 } END { for (i = 1; i <= n; i++) printf("%-20s %-15d %d%% \n", a[i,1], a[i,2], 100 * a[i,1] / t)}'| head -10 |awk ' BEGIN{printf("%12s %12s %6s \n","packets","packet size","%")}{printf("%12d %12d %6s \n",$1,$2,$3)}')"
-write_mysql "tcpdump by proto" "$(sudo tcpdump -nn -r $filename | awk '{print $2 "\t" int($NF)}'|gawk '{a[$1]+=$2; s+=$2} END {PROCINFO["sorted_in"] = "@val_num_desc";for(proto in a) printf( "%15s %15d %d%% \n",proto,a[proto],100*a[proto]/s) }')"
+write_mysql "tcpdump by proto,size" "$(sudo tcpdump -nn -r $filename | awk '{print $2 "\t" int($NF)}'|gawk '{a[$1]+=$2; s+=$2} END {PROCINFO["sorted_in"] = "@val_num_desc";for(proto in a) printf( "%15s %15d %d%% \n",proto,a[proto],100*a[proto]/s) }')"
 # delete old tcpdump files
 rm -f $filename
 
