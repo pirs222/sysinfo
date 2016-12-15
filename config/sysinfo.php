@@ -17,36 +17,39 @@
 
 	$id=intval($_GET["q"]);
 	if ($id>0){
+		// выводим историю
 		$res = $mysqli->query("SELECT  id,date FROM log WHERE id=$id;");
 	}
 	else{
+		// выводим последние данные
 		$res = $mysqli->query("SELECT  id,date FROM log ORDER BY id DESC LIMIT 1;");
 	}
 
 	$row = $res->fetch_assoc();
 	$log_id=$row['id'];
 	$date=$row['date'];
+ 
+ 	//  current data button
+ 	if ($id<>$log_id){
+ 		echo "<a href='sysinfo'><button>Current data</button>";
+ 	}
+ 	// Prev data button
 	if($log_id>1){
-			echo "<a href='sysinfo.php?q=".($log_id-1)."'><button>Prev data</button></a>";
+			echo "<a href='sysinfo?q=".($log_id-1)."'><button>Prev data</button></a>";
 	};	
 
 // show data log
 	echo "<h1 class='ok'>Datetime (UTC): $date  id: $log_id</h1>";
 
-	$res = $mysqli->query("SELECT  id,name FROM section  WHERE log_id=$log_id ORDER BY id");
+	$res = $mysqli->query("SELECT  name,data FROM section  WHERE log_id=$log_id ORDER BY id");
 
 while ($section = $res->fetch_assoc()) {
-	$section_id= $section['id'];
 	$name= $section['name'];
-// заголовок секции
+	$data = $section['data'];
+	// заголовок секции	
 	echo "<h2>$name</h2>";
-
-	$res2 = $mysqli->query("SELECT  datarow FROM  data  WHERE section_id=$section_id ORDER BY id");
-	while ($row = $res2->fetch_assoc()) {
-		$datarow = $row['datarow'];
-		// строка данных
-		echo "<pre>$datarow</pre><hr>";
-	}
+	// строка данных
+	echo "<pre>$data</pre><hr>";
 }
 
 ?>

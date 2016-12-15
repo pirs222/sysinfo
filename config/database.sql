@@ -19,18 +19,8 @@ CREATE TABLE `section` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `log_id` int(11) NOT NULL,
   `name` text NOT NULL,
+  `data` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `log_id` (`log_id`),
   CONSTRAINT `section_ibfk_1` FOREIGN KEY (`log_id`) REFERENCES `log` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-CREATE TABLE `data` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `section_id` int(11) NOT NULL,
-  `datarow` text NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `section_id` (`section_id`),
-  CONSTRAINT `data_ibfk_1` FOREIGN KEY (`section_id`) REFERENCES `section` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
