@@ -2,7 +2,7 @@
 
 ##Usage:
 
-git clone https://github.com/mcdba/sysinfo.git
+git clone https://github.com/lostmap/sysinfo.git
 
 cd sysinfo
 
