@@ -11,6 +11,17 @@
 	
 <?php
 
+// Дополнительно вверху страницы надо выводить:
+// адрес клиента который обращается к ресурсу, его порт
+// адрес nginx который обращается к apache, его порт, версию nginx (в nginx добавить в проксируемый запрос заголовок X-NGX-VERSION).
+echo "Client addr=".$_SERVER['HTTP_X_FORWARDED_FOR']."<br>";
+echo "Client port=".$_SERVER['REMOTE_PORT']."<br>";
+
+echo "Nginx addr=".$_SERVER['REMOTE_ADDR']."<br>";
+echo "Nginx port=".$_SERVER['SERVER_PORT']."<br>";
+echo "HTTP_X_NGX_VERSION=".$_SERVER['HTTP_X_NGX_VERSION']."<br>";
+//echo var_dump($_SERVER);
+
 // Соединяемся, выбираем базу данных
 	$mysqli = new mysqli('localhost', 'root', 'mysqlpass',"sysinfo");
 
