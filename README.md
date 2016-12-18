@@ -11,4 +11,4 @@ chmod +x install.sh
 ./install.sh
 
 
-ok
+ok2
