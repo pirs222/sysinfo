@@ -18,11 +18,11 @@ function write_mysql()
 
 
 cpu_s=$(nproc);
-LA_1=$(uptime | awk '{ gsub(",","",$8); print $8}')
-LA_5=$(uptime | awk '{ gsub(",","",$9); print $9}')
-LA_15=$(uptime | awk '{ gsub(",","",$10); print $10}')
+LA_1=$(uptime | awk '{print substr($8,1,length($8)-1)}')
+LA_5=$(uptime | awk '{print substr($9,1,length($9)-1)}')
+LA_15=$(uptime | awk '{print  $10}')
 
-write_mysql "CPU Load Average" "$LA_1  $LA_5  $LA_15  $cpu_s";
+write_mysql "CPU Load Average" "$LA_1  $LA_5  $LA_15";
 write_mysql "tcpdump Top Talkers src/dst ip, port, pps" "$(sudo tcpdump -nn -r $filename tcp or udp and not ip6 | awk '{gsub(/\./," ",$3);gsub(/\./," ",$5);print $3" " $5}' |awk '{print $1"."$2"."$3"."$4"  "$6"."$7"."$8"."$9"  "$5}'|gawk '{a[$1" "$2" "$3]+=1; s+=1} END {PROCINFO["sorted_in"] = "@val_num_desc";for(sip_dip_p in a) printf( "%45s %5d %8.2f \n",sip_dip_p,a[sip_dip_p],a[sip_dip_p]/60) }'| awk '{printf("%17s %17s %8s %5d %8.2f\n",$1,$2,$3, $4, $5)}')";
 write_mysql "tcpdump Top Talkers src/dst ip, port, bps" "$(sudo tcpdump -nn -r $filename tcp or udp and not ip6 | awk '{gsub(/\./," ",$3);gsub(/\./," ",$5);print $3" " $5" "$NF}' |awk '{print $1"."$2"."$3"."$4"  "$6"."$7"."$8"."$9"  "$5" "$NF}'|gawk '{a[$1" "$2" "$3]+=$NF; s+=$NF} END {PROCINFO["sorted_in"] = "@val_num_desc";for(sip_dip_p in a) printf( "%45s %5d %8.2f \n",sip_dip_p,a[sip_dip_p],a[sip_dip_p]/60) }'| awk '{printf("%17s %17s %8s %5d %8.2f\n",$1,$2,$3, $4, $5)}')";
 
