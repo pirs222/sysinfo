@@ -5,7 +5,7 @@ DB_NAME='sysinfo';
 # capture tcpdump
 DATE=$(date +%Y-%m-%d:%H:%M:%S);
 filename=$PWD/tst$DATE.pcap
-cups=$(nproc);
+cup_s=$(nproc);
 sudo tcpdump  -G 60 -W 1 -w $filename
 
 # write into log return log id
@@ -18,7 +18,7 @@ function write_mysql()
 }
 
 
-write_mysql "CPU Load Average" "$(uptime | awk '{print substr($8,1,length($8)-1)" "substr($9,1,length($9)-1)" "$10" cpu(s):"$cups}')";
+write_mysql "CPU Load Average" "$(uptime | awk '{print substr($8,1,length($8)-1)" "substr($9,1,length($9)-1)" "$10" cpu(s):"$cup_s}')";
 write_mysql "tcpdump Top Talkers" "$(sudo tcpdump -nn -r $filename tcp or udp or arp or icmp | awk '{print $3 "\n" $5}' | cut -sd. -f 1-4 | sort | uniq -c | sort -nr | head -10)";
 write_mysql "tcpdump Top Talkers w/o  local ip" "$(sudo tcpdump -nn -r $filename tcp or udp or arp or icmp | awk '{print $3 "\n" $5}' |grep -v -F "$(ip addr | awk '/global/ {print $2}' | cut -d/ -f1)" | cut -sd. -f 1-4 | sort | uniq -c | sort -nr | head -10)";
 write_mysql "tcpdump Top Talkers by Packet Size" "$(sudo tcpdump -nn -r $filename| awk '{print int($NF)}'|sort | uniq -c | sort -nr | awk '{ a[++n,1] = $1; a[n,2] = $2; t += $1 } END { for (i = 1; i <= n; i++) printf("%-20s %-15d %d%% \n", a[i,1], a[i,2], 100 * a[i,1] / t)}'| head -10 |awk ' BEGIN{printf("%12s %12s %6s \n","packets","packet size","%")}{printf("%12d %12d %6s \n",$1,$2,$3)}')"
