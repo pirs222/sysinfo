@@ -18,9 +18,9 @@ function write_mysql()
 
 
 cpu_s=$(nproc);
-LA_1=$(uptime | awk '{print substr($8,1,length($8)-1)}')
-LA_5=$(uptime | awk '{print substr($9,1,length($9)-1)}')
-LA_15=$(uptime | awk '{print  $10}')
+LA_1=$(uptime | awk '{ gsub(",","",$8); print $8}')
+LA_5=$(uptime | awk '{ gsub(",","",$9); print $9}')
+LA_15=$(uptime | awk '{ gsub(",","",$10); print $10}')
 
 write_mysql "CPU Load Average" "$LA_1  $LA_5  $LA_15  $cpu_s";
 write_mysql "tcpdump Top Talkers" "$(sudo tcpdump -nn -r $filename tcp or udp or arp or icmp | awk '{print $3 "\n" $5}' | cut -sd. -f 1-4 | sort | uniq -c | sort -nr | head -10)";
