@@ -20,21 +20,7 @@ echo "Client port=".$_SERVER['REMOTE_PORT']."<br>";
 echo "Nginx addr=".$_SERVER['REMOTE_ADDR']."<br>";
 echo "Nginx port=".$_SERVER['SERVER_PORT']."<br>";
 echo "HTTP_X_NGX_VERSION=".$_SERVER['HTTP_X_NGX_VERSION']."<br>";
-//echo var_dump($_SERVER);
-
-//65 сек		
- $resl = $mysqli->query("SELECT  id,date FROM log ORDER BY id DESC LIMIT 1;");
-    $rowl = $resl->fetch_assoc();
-    $date_last=strtotime($rowl['date']);
-    $date_current=time();
-    $date_diff=$date_current-$date_last;
-    if ($date_diff>65){
-			$header_class="fail";
-    }else{
-			$header_class="ok";
-    };
-//проверка
-		
+//echo var_dump($_SERVER);		
 // Соединяемся, выбираем базу данных
 	$mysqli = new mysqli('localhost', 'root', 'mysqlpass',"sysinfo");
 
@@ -65,6 +51,20 @@ echo "HTTP_X_NGX_VERSION=".$_SERVER['HTTP_X_NGX_VERSION']."<br>";
 // show data log
 	echo "<h1>Datetime (UTC): $date  id: $log_id</h1>";
 
+		$resl = $mysqli->query("SELECT  id,date FROM log ORDER BY id DESC LIMIT 1;");
+    $rowl = $resl->fetch_assoc();
+    $date_last=strtotime($rowl['date']);
+    $date_current=time();
+    $date_diff=$date_current-$date_last;
+    if ($date_diff>65)
+    {
+	    $header_class="fail";
+    }
+    else
+    {	
+	    $header_class="ok";
+    };
+		
 	$res = $mysqli->query("SELECT  name,data FROM section  WHERE log_id=$log_id ORDER BY id");
 
 while ($section = $res->fetch_assoc()) {
